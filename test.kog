@@ -8,6 +8,11 @@ Types {
 	Head as Indicator[3]
 	LoopNorth as Input(4)
 	COM as UART(1, 9600 Baud, Even Parity, 8bit Frame, 2bit Stop)
+	HeadSecond as Composite {
+		Red as Indicator
+		Yellow as Indicator
+		Green as Indicator
+	}
 }
 
 Variables {
@@ -28,9 +33,6 @@ Variables {
 		X[0] := (c == Red)
 		X[1] := (c == Yellow)
 		X[2] := (c == Green)
-	}
-	Function ClearHead(h as Head) {
-		SetHead(h, Clear)
 	}
 }
 
