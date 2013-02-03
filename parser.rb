@@ -13,15 +13,11 @@ class SimpleParser < Parslet::Parser
 	rule(:binary_ex) { expression.as(:rhs) >> binary_op.as(:op) >> expression.as(:lhs) }
 	rule(:binary_ex_paren) { lparen >> binary_ex >> rparen }
 
-	#rule(:expression) { cond | funcall | number | name | bool | binary_ex | binary_ex_paren }
-	rule(:expression) {  bool | binary_ex_paren | binary_ex | name | number | funcall }
-
-
 	rule(:cond) {
 		(if_kw >> logic_atom.as(:cond) >> exec_body).as(:if) >>
 		(
 			else_kw >>
-			body.as(:if_false)
+			exec_body.as(:if_false)
 		).as(:else).maybe
 	}
 
@@ -43,7 +39,7 @@ class SimpleParser < Parslet::Parser
 	rule(:as) { space >> str('as') >> space }
 	rule(:every) { str('Every') >> space }
 	rule(:enum) { str('Enum').as(:enum) >> lparen >> (name.as(:name) >> (comma >> name.as(:name)).repeat).as(:values) >> rparen }
-	rule(:array_index) { lbracket >> (number|expression).as(:index) >> rbracket }
+	rule(:array_index) { lbracket >> (number|base_exec_body).as(:index) >> rbracket }
 	rule(:ms_time_unit) {  str('Miliseconds') | str('Milisecond') | str('ms') }
 	rule(:time_unit) { (ms_time_unit).as(:time_unit) >> space? }
 	rule(:base_exec_body) { (func | cond | logic_expression_paren | funccall | assignment | foreach_section) }
@@ -68,7 +64,18 @@ class SimpleParser < Parslet::Parser
 
 	rule(:logic_expression_paren) { lparen >> (logic_binary_expression|logic_unary_expression|logic_atom) >> rparen }
 
-	rule(:type_def) { enum | name  }
+	rule(:stop_bits) { (match['12']).as(:stop_bit) >> str('bit') >> space >> str('Stop') }
+	rule(:frame_size) { (match('[56789]')).as(:frame_size) >> str("bit") >> space >> str("Frame") }
+	rule(:parity) { (str('Even') | str('Odd') | str('None')).as(:parity) >> space >> str('Parity')}
+	rule(:baud) { (number).as(:baud) >> space >> str('Baud') }
+	rule(:uart_dec) { (str('UART:') >> number.as(:address) >> comma >> baud >> comma >> parity >> comma >> frame_size >> comma >> stop_bits).as(:uart) }
+	rule(:spi_dec) { (str('SPI:') >> (str('master')|str('slave')).as(:address)).as(:spi) }
+	rule(:port_name) {  (spi_dec|uart_dec|( (name >> str(':')).maybe >> number)).as(:port) >> space?}
+	rule(:input_type) { (str('Input') >> lparen >> port_name >> rparen).as(:input) }
+	rule(:output_type) { (str('Output') >> lparen >> port_name >> rparen).as(:output) }
+	rule(:inputoutput_type) { (str('IO') >> lparen >> port_name >> rparen).as(:IO) }
+	rule(:io_type) { inputoutput_type | input_type | output_type }
+	rule(:type_def) { enum| io_type | name   }
 	rule(:variables_sections) { str('Variables') >> space? >> lbrace >>
 		(param >> space).repeat.as(:variables) >>
 		rbrace
@@ -105,6 +112,8 @@ Types {
 	Indicator as Bool
 	Color as Enum(Red, Yellow, Green)
 	Head as Indicator[3]
+	LoopNorth as Input(4)
+	COM as IO(UART:1, 9600 Baud, Even Parity, 8bit Frame, 2bit Stop)
 }
 
 Variables {
@@ -116,6 +125,8 @@ Variables {
 	CurrentPhase as Phase
 	Alternate as Bool
 	Counter as Integer
+
+	Modem as COM
 }
 
 Properties {
@@ -148,6 +159,8 @@ Program Main {
 		if (A) {
 			ForEach X as ind {
 			}
+		}
+		else {
 		}
 		Rescue f as TimeConstraintViolated {
 		}
