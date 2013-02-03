@@ -23,6 +23,7 @@ Rules are tested on assignments. A failed rule will throw a Fault
 Rescue sections catch faults by type and handle them appropriately
 # TODO
 
+* Get Parser Working
 * Create AST
 * Create Interpreter
 * Create LLVM IL

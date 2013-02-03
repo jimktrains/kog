@@ -35,7 +35,7 @@ class SimpleParser < Parslet::Parser
 	rule(:true_kw) { str('T') | str('True') }
 	rule(:false_kw){ str('F') | str('False') }
 	rule(:else_kw) { str('else') >> space? }
-	rule(:func_kw) { str('function') >> space? }
+	rule(:func_kw) { str('Function') >> space? }
 	rule(:as) { space >> str('as') >> space }
 	rule(:every) { str('Every') >> space }
 	rule(:enum) { str('Enum').as(:enum) >> lparen >> (name.as(:name) >> (comma >> name.as(:name)).repeat).as(:values) >> rparen }
@@ -45,6 +45,12 @@ class SimpleParser < Parslet::Parser
 	rule(:base_exec_body) { (func | cond | logic_expression_paren | funccall | assignment | foreach_section) }
 	rule(:exec_body) { lbrace >> base_exec_body.repeat.as(:body)  >> rbrace }
 	rule(:prog_body) { lbrace >> (base_exec_body | every_section | rescue_section | setup_section).repeat.as(:body) >> rbrace }
+
+	rule(:rule_exp) { (name.as(:type) >> lparen >> var_list.as(:varaibles) >> rparen >> str(':') >> space >> logic_atom.as(:rule)).as(:fault) }
+	rule(:rule_kw) { str('Rules') >> space? }
+	rule(:colon) { str(':') >> space? }
+	rule(:var_list) { name.as(:variable) >> (comma >> name.as(:variable)).repeat.maybe }
+	rule(:rule_section) { rule_kw >> lbrace >> rule_exp.repeat.as(:rules) >> rbrace }
 
 	rule(:assignment) { name.as(:object) >> space? >> str(':=').as(:op) >> space? >> ( func | logic_expression_paren | funccall).as(:value) >> space? }
 	rule(:types_section) { str('Types') >> space? >> lbrace >>
@@ -102,77 +108,9 @@ class SimpleParser < Parslet::Parser
 	rule(:param) { name.as(:param) >> as >> type_def.as(:type) }
 	rule(:params) { lparen >> (param >> (comma >> param).repeat).as(:params) >> rparen }
 
-	rule(:root) { space? >> types_section >> variables_sections >> properties_section >> program_section.repeat }
+	rule(:root) { space? >> types_section >> variables_sections >> properties_section >> rule_section >> program_section.repeat }
 end
 
 p = SimpleParser.new
-tree = p.parse <<EOS
-Types {
-	Phase as Integer[2]
-	Indicator as Bool
-	Color as Enum(Red, Yellow, Green)
-	Head as Indicator[3]
-	LoopNorth as Input(4)
-	COM as IO(UART:1, 9600 Baud, Even Parity, 8bit Frame, 2bit Stop)
-}
-
-Variables {
-	North as Head
-	South as Head
-	East as Head
-	West as Head
-
-	CurrentPhase as Phase
-	Alternate as Bool
-	Counter as Integer
-
-	Modem as COM
-}
-
-Properties {
-	function IsRed(X as Head)    { ( (X[0]) & ( (~X[1]) & (~X[2]))) }
-	function IsYellow(X as Head) { ((~X[0]) & ( ( X[1]) & (~X[2]))) }
-	function IsGreen(X as Head)  { ((~X[0]) & ( (~X[1]) & ( X[2]))) }
-	function IsClear(X as Head)  { ((~X[0]) & ( (~X[1]) & (~X[2]))) }
-}
-
-Program Main {
-	function SetHead(h as Head, c as Color) { 
-		X[0] := (c == Red)
-		X[1] := (c == Yellow)
-		X[2] := (c == Green)
-	}
-
-	Setup {
-		X[0] := (True)
-		X[1] := (False)
-		X[2] := (False)
-	}
-
-	function ClearHead(h as Head) {
-		X[0] := (False)
-		X[1] := (False)
-		X[2] := (False)
-	}
-
-	Every 5 Miliseconds {
-		if (A) {
-			ForEach X as ind {
-			}
-		}
-		else {
-		}
-		Rescue f as TimeConstraintViolated {
-		}
-	}
-	Rescue f as PhaseConflict {
-	}
-	Rescue f as TimeConstraintViolated {
-	}
-}
-
-Program Conflict {}
-
-EOS
-
+tree = p.parse File.open(ARGV[0]).read
 pp tree

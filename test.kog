@@ -1,0 +1,118 @@
+# This is a test program
+# Comments begin with an octothorpe
+
+Types {
+	Phase as Integer[2]
+	Indicator as Bool
+	Color as Enum(Red, Yellow, Green, Clear)
+	Head as Indicator[3]
+	LoopNorth as Input(4)
+	COM as UART(1, 9600 Baud, Even Parity, 8bit Frame, 2bit Stop)
+}
+
+Variables {
+	North as Head
+	South as Head
+	East as Head
+	West as Head
+
+	CurrentPhase as Phase
+	Alternate as Bool
+	Counter as Integer
+
+	Conflict as String
+
+	Modem as COM
+
+	Function SetHead(h as Head, c as Color) { 
+		X[0] := (c == Red)
+		X[1] := (c == Yellow)
+		X[2] := (c == Green)
+	}
+	Function ClearHead(h as Head) {
+		SetHead(h, Clear)
+	}
+}
+
+Properties {
+	Property IsRed(X as Head):    ( (X[0]) & ( (~X[1]) & (~X[2])))
+	Property IsYellow(X as Head): ((~X[0]) & ( ( X[1]) & (~X[2])))
+	Property IsGreen(X as Head):  ((~X[0]) & ( (~X[1]) & ( X[2])))
+	Property IsClear(X as Head):  ((~X[0]) & ( (~X[1]) & (~X[2])))
+}
+
+Rules {
+	Rule ConflictingIndicator(Nort, South, East, West): 
+		(IsClear(Nort) & IsClear(South) & IsClear(East) & IsClear(West)) |
+		(~IsRed(North) & IsRed(East) & IsRed(West)) |
+		(~IsRed(South) & IsRed(East) & IsRed(West)) |
+		(~IsRed(East) & IsRed(North) & IsRed(South)) |
+		(~IsRed(West) & IsRed(North) & IsRed(South))
+}
+
+Program Main {
+	Function SetHead(h as Head, c as Color) { 
+		X[0] := (c == Red)
+		X[1] := (c == Yellow)
+		X[2] := (c == Green)
+	}
+
+	Setup {
+		X[0] := (True)
+		X[1] := (False)
+		X[2] := (False)
+	}
+
+	Function ClearHead(h as Head) {
+		X[0] := (False)
+		X[1] := (False)
+		X[2] := (False)
+	}
+
+	Every 5 Miliseconds {
+		if (A) {
+			ForEach X as ind {
+			}
+		}
+		else {
+		}
+		Rescue f as TimeConstraintViolated {
+		}
+	}
+	Rescue f as PhaseConflict {
+		Conflict = "PhaseConflict:" + FaultLine(f)
+		Execute Program Conflict
+	}
+	Rescue f as ConflictingIndicator {
+		Conflict = "ConflictingIndicator:" + FaultLine(f)
+		Execute Program Conflict
+	}
+	Rescue f as TimeConstraintViolated {
+	}
+}
+
+Program Conflict {
+	SetHead(North, Red)
+	SetHead(South, Red)
+	SetHead(East, Yellow)
+	SetHead(West, Yellow)
+	Alternate = False
+	UARTWrite(Modem, "Conflict found:" + Conflict + ":" + Time())
+
+	Every 500 Miliseconds {
+		Alternate = ~Alternate
+		if (Alternate) {
+			SetHead(North, Red)
+			SetHead(South, Red)
+			SetHead(East, Yellow)
+			SetHead(West, Yellow)
+		}
+		else {
+			SetHead(North, Clear)
+			SetHead(South, Clear)
+			SetHead(East, Clear)
+			SetHead(West, Clear)
+		}
+	}
+}
+
