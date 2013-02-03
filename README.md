@@ -30,7 +30,7 @@ This is where types are aliased or composed. Type Definition is a:
 
 `<Varaible Name> as <Type Name>`
 
-This is where all variables, with the exception of Function and Rescue parameters
+This is where all variables, with the exception of Function and Rescue parameters, are defined
 
 ## Properties
 
