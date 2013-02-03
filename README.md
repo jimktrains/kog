@@ -5,16 +5,16 @@ This language is designed to aid in the programming of Real-Time systems, specif
 # A Basic Program
 
 * Sections
- * Types
- * Variables
- * Properties
- * Rules
- * Program
-  * Every
-   * Rescue
-  * Function
-   * Rescue
-  * Rescue
+    * Types
+    * Variables
+    * Properties
+    * Rules
+    * Program
+        * Every
+         * Rescue
+        * Function
+         * Rescue
+        * Rescue
 
 If an Every section does not finish before it is triggered again, a TimeConstraintViolated fault is raised.
 
