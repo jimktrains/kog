@@ -1,0 +1,11 @@
+# Test
+Variables
+  Phase1 as Integer
+  Phase2 as Integer
+
+Properties
+  IsRed(X as Integer) X == Red & Test(X)
+
+Rules
+  (Phase1, Phase2) causes PhaseConflict when
+     Phase1 == Phase2

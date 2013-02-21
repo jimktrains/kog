@@ -1,0 +1,133 @@
+# This is a test program
+# Comments begin with an octothorpe
+
+# This example is describing a 4-way intersection
+# controlled by a 4 traffic lights (one in each direction)
+
+Using SNeP # Small Networking Protocol
+Using Logging
+
+Types
+	Phase as Integer[2]
+	Indicator as Bool
+	Color as Enum(Red, Yellow, Green, Clear)
+	ColorWithLeft as Composite Enum
+		Color
+		Enum(LeftArrow)
+	Head as Indicator[3]
+	HeadAlt as Indicator[Color]
+	LoopNorth as Input(B4) # B4 is the port and bit in the uc
+	COM as UART(1, 9600 Baud, Even Parity, 8bit Frame, 2bit Stop)
+	NormalHead as Structure
+		Red as Boolean
+		Yellow as Boolean
+		Green as Boolean
+		IsClear? as Boolean from Function()
+			Return ~( self.Red | self.Yellow | self.Green )
+		Set as Sub(indicator as Color)
+			self.Red    := (indicator == Red)
+			self.Yellow := (indicator == Yellow)
+			self.Green  := (indicator == Green)
+	LeftArrowHead as Composite Structure
+		NormalHead
+		Structure
+			LeftArrow as Boolean
+		Override
+			Clear as Boolean from Function(){
+				Return Parent<NormalHead>.IsClear? & ~LeftArrow
+			Set as Sub(indicator as ColorWithLeft)
+				self.Red       := (indicator == Red)
+				self.Yellow    := (indicator == Yellow)
+				self.Green     := (indicator == Green)
+				self.LeftArrow := (indicator == LeftArrow)
+	ConflictingIndicator as Fault
+
+Variables
+	North as Head
+	South as Head
+	East as Head
+	West as Had
+
+	CurrentPhase as Phase
+	Alternate as Bool
+	Counter as Integer
+
+	Conflict as Fault
+
+	Modem as COM
+
+	Log as Logger.UART
+
+Properties
+	Property IsRed(X as Head)    ( (X[0]) & ( (~X[1]) & (~X[2])))
+	Property IsYellow(X as Head) ((~X[0]) & ( ( X[1]) & (~X[2])))
+	Property IsGreen(X as Head)  ((~X[0]) & ( (~X[1]) & ( X[2])))
+	Property IsClear(X as Head)  ((~X[0]) & ( (~X[1]) & (~X[2])))
+
+
+Rules
+	Rule for (Nort, South, East, West) causes ConflictingIndicator
+		(IsClear(Nort) & IsClear(South) & IsClear(East) & IsClear(West)) |
+		(~IsRed(North) & IsRed(East) & IsRed(West)) |
+		(~IsRed(South) & IsRed(East) & IsRed(West)) |
+		(~IsRed(East) & IsRed(North) & IsRed(South)) |
+		(~IsRed(West) & IsRed(North) & IsRed(South))
+
+Setup
+	North.Set(Red)
+	South.Set(Red)
+	East.Set(Red)
+	West.Set(Red)
+	Log.UART = Modem
+
+Program Main
+
+	Every 5 Miliseconds
+		if (A)
+			ForEach X as ind
+		else
+		Rescue f as TimeConstraintViolated
+			Continue
+	Rescue f as PhaseConflict
+		Conflict = f
+		Execute Program Conflict
+	Rescue f as ConflictingIndicator
+		Conflict = f
+		Execute Program Conflict
+	Rescue f as TimeConstraintViolated
+		Continue
+	Rescue f as Fault
+		Continue
+}
+
+Program Conflict
+	SetHead(North, Red)
+	SetHead(South, Red)
+	SetHead(East, Yellow)
+	SetHead(West, Yellow)
+	Alternate = False
+
+	# f is a Fault, which extends Serializable which is required for Write
+	# f serializes to
+	#	Int16	Fault Type
+	#	Int16	Line
+	# Logger will prepend the time and address
+	#	Int32	Time
+	#	Int16	Address
+	Log.Write(f)
+
+	Every 500 Miliseconds
+		Alternate = ~Alternate
+		if (Alternate)
+			SetHead(North, Red)
+			SetHead(South, Red)
+			SetHead(East, Yellow)
+			SetHead(West, Yellow)
+		else
+			SetHead(North, Clear)
+			SetHead(South, Clear)
+			SetHead(East, Clear)
+			SetHead(West, Clear)
+	Rescue f as Fault
+		Continue
+
