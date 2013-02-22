@@ -124,9 +124,30 @@ Functions that take the base type of the array (Integer in the above example), m
 
 # Flow Control
 
-* If
-* Every
-* After
+## If
+## Every
+
+Runs the block every given units of time.  The compiler should try to figure out how long the block will take assuming every non-mutually-exclusive (if vs else) is executed.  If it will take too long, the compiler should complain. The largest value should be on the outside.
+
+	Every 10 msec
+		x := x + 1
+
+Nested example
+
+	Every 100 msec
+		Every 4 msec
+			x := x + 1
+		x := x + 1
+		Every 25 msec
+			x := x + 1
+		Every 10 msec
+			x := x + 1
+			Every 5 msec
+				x := x + 1
+
+Nesting in this manner forces the programmer to define the order that the blocks will run in when both should be executing at the same time.
+
+## After
 
 ## Goals
 
