@@ -156,6 +156,32 @@ List comprehension is also possible
 		[2*x for x in L where x < 4] # [2,4,6]
 		[x*x for x in L] # [1,4,9,16,25]
 
+Generators can also be used and are useful in order to not require memory for the entire list.
+
+	Varaibles
+		L as Integer[5]
+		G as Generator as Integer
+	Body
+		L := [1,2,3,4,5]
+		G := [emit x*x for x in L]
+		For x in G # G will only compute and store the current value of the generator
+			x := x + 1
+
+Methods can also be generators
+
+	Methods
+		Multiples(x as Integer) as Generator as Integer
+			Variables
+				cur as Integer
+			Body
+				Loop
+					cur := 1
+					Emit cur * x
+					cur := 1 + cur
+	Body
+		For x in Multiples(4) #Now, this will loop forever...
+			x := x + 1
+
 # Sections
 
 * Object
@@ -199,6 +225,7 @@ These are constraints to what values can assigned to varaibles. These are define
 # Flow Control
 
 ## If
+## Loop
 ## For
 
 ``For`` loops iterate over iterable values (Sets, Enum, and Array).
