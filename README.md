@@ -29,7 +29,8 @@ These are symbles and cannot be assgined to.
 These are predefined Objects in the system
 
 * Integer
-* String
+* Byte
+ * String
 
 #### Builders
 
@@ -42,6 +43,7 @@ These types that are used to define new types
 * Method
  * Function
  * Table
+* Array
 
 ### Table
 Tables are used to define table look-ups in an æsthetic manner.
@@ -75,6 +77,23 @@ Sets can be used as type and creates an Enum of the given values. The values ret
 		Example := Num # This is not allowed as it cannot be guaranteed  at compile time to be valid
 		Example := Example + 2 # ditto
 
+## Arrays
+Arrays are defined by supplying an array size in the type definition.
+
+	MyList as Integer[5]
+
+Functions that take the base type of the array (Integer in the above example), may take an array of the base type and will return an array of the function return type and same size as the input array.
+
+	Methods
+		Square(x as Integer) as Integer
+			Return x*x
+	Body
+		MyList as Integer[5]
+		MyList := [1,2,3,4,5]
+		MyList[0] := 6 # [6,2,3,4,5]
+		MyList[5] := 7 # Syntax error
+		MyList := Square(MyList) # [36,4,9,16,25]
+
 # Sections
 
 * Object
@@ -83,8 +102,14 @@ Sets can be used as type and creates an Enum of the given values. The values ret
  * Methods
  * Properties
  * Rules
+ * Aliases
+ * Extends
 * Enum
+ * Extends
+ * Values
 * Set
+ * Extends
+ * Values
 * Program
  * Variables
  * Setup
@@ -92,6 +117,13 @@ Sets can be used as type and creates an Enum of the given values. The values ret
  * Properties
  * Rules
  * Body
+ * Alases
+
+# Flow Control
+
+* If
+* Every
+* After
 
 ## Goals
 
