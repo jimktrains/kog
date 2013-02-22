@@ -156,6 +156,8 @@ List comprehension is also possible
 		[2*x for x in L where x < 4] # [2,4,6]
 		[x*x for x in L] # [1,4,9,16,25]
 
+## Generators
+
 Generators can also be used and are useful in order to not require memory for the entire list.
 
 	Varaibles
