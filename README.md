@@ -183,6 +183,8 @@ Methods can also be generators
 	Body
 		For x in Multiples(4) #Now, this will loop forever...
 			x := x + 1
+		For x in Multiples(4) where x < 16 #This won't loop forever
+			x := x + 1
 
 # Sections
 
