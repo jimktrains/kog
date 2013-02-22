@@ -198,6 +198,20 @@ These are constraints to what values can assigned to varaibles. These are define
 # Flow Control
 
 ## If
+## For
+
+``For`` loops iterate over iterable values (Sets, Enum, and Array).
+
+	Variables
+		L as Integer[5]
+	Body
+		L := [1,2,3,4,5]
+		For x in L # Loops over 1 2 3 4 5
+			x := x + 1 # Note, this won't modify L
+		For x in L where x > 4 # Loops over 5
+			x := x + 1 # Note, this won't modify L
+		For x in L! # Lopps over 1,2,3,4,5
+			x := x + 1 # This _will_ modify L with value of x at the end of the block
 ## Every
 
 Runs the block every given units of time.  The compiler should try to figure out how long the block will take assuming every non-mutually-exclusive (if vs else) is executed.  If it will take too long, the compiler should complain. The largest value should be on the outside.
