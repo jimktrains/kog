@@ -87,9 +87,11 @@ Functions that take the base type of the array (Integer in the above example), m
 	Methods
 		Square(x as Integer) as Integer
 			Return x*x
-	Body
+	Variables
 		MyList as Integer[5]
+	Setup
 		MyList := [1,2,3,4,5]
+	Body
 		MyList[0] := 6 # [6,2,3,4,5]
 		MyList[5] := 7 # Syntax error
 		MyList := Square(MyList) # [36,4,9,16,25]
