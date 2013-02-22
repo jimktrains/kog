@@ -30,9 +30,6 @@ These are predefined Objects in the system
 
 * Integer
 * String
-* Method
- * Function
- * Table
 
 #### Builders
 
@@ -42,6 +39,9 @@ These types that are used to define new types
 * Enum
 * Set
 * Tuple
+* Method
+ * Function
+ * Table
 
 ### Table
 Tables are used to define table look-ups in an æsthetic manner.
