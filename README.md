@@ -210,7 +210,7 @@ These are constraints to what values can assigned to varaibles. These are define
 			x := x + 1 # Note, this won't modify L
 		For x in L where x > 4 # Loops over 5
 			x := x + 1 # Note, this won't modify L
-		For x in L! # Lopps over 1,2,3,4,5
+		For x in L! # Loops over 1,2,3,4,5
 			x := x + 1 # This _will_ modify L with value of x at the end of the block
 ## Every
 
