@@ -267,6 +267,8 @@ Nested example
 
 Nesting in this manner forces the programmer to define the order that the blocks will run in when both should be executing at the same time.
 
+The compiler should also ensure that the estimated execution time of each Every should fit into worst case gap between scheduled Every blocks.  The compiler should report what these worst-case gaps are, even if there is enough time.
+
 ## Rescue
 
 Catches exceptions
