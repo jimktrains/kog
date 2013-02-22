@@ -106,11 +106,11 @@ Object Intersection
 		:4+8 as Phase.:4+8
 	Methods
 		Update() as Seconds
-			(CurPhase, CurPhaseState) = PhaseTransition[CurPhase][CurPhaseState]
-			SignalUpdateMethod(PhaseToLights[CurPhase][CurPhaseState])
-			Return PhaseLength[CurPhas][CurPhaseState]
+			(CurPhase, CurPhaseState) := PhaseTransition[CurPhase][CurPhaseState]
+			SignalUpdateMethod(PhaseToLights(CurPhase,CurPhaseState))
+			Return PhaseLength(CurPhas,CurPhaseState)
 		SetUpdateMethod(m as UpdateMethod)
-			SignalUpdateMethod = m
+			SignalUpdateMethod := m
 
 Program Main
 	Variables
@@ -123,5 +123,5 @@ Program Main
 		UpdateSignalHeads(NS_Heads as NormalHeadIndication, WB_Head as NormalHeadIndication, EB_Head as LeftTurnArrowHeadIndication) as None
 			# Do what it does to sent all the singal heads
 	Body
-		After NextUpdate
+		Wait NextUpdate
 			NextUpdate := FifthAtSixth.Update()
