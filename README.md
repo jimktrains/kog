@@ -136,6 +136,15 @@ Functions that take the base type of the array (Integer in the above example), m
  * Body
  * Alases
 
+## Properties
+These are methods but can only have a body of a single boolean expression which may only call other properties
+
+## Rules 
+These are constraints to what values can assigned to varaibles. These are defined by boolean expression which may only call properties. When the condition is met, the exception in the definition is raised.
+
+	Rules
+		(Phase1, Phase2) causes ConflictFault when
+			Phase1 == Phase2
 # Flow Control
 
 ## If
