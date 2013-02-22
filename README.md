@@ -147,8 +147,13 @@ Nested example
 
 Nesting in this manner forces the programmer to define the order that the blocks will run in when both should be executing at the same time.
 
-## After
+## Rescue
 
-## Goals
+Catches exceptions
+
+	Rescue x as ConflictFault
+		x := x + 1
+
+# Goals
 
 To be able to compile programs that can be run on microcontrollers.
