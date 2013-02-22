@@ -78,20 +78,20 @@ Sets can be used as type and creates an Enum of the given values. The values ret
 # Sections
 
 * Object
-** Variables
-** Setup
-** Methods
-** Properties
-** Rules
+ * Variables
+ * Setup
+ * Methods
+ * Properties
+ * Rules
 * Enum
 * Set
 * Program
-** Variables
-** Setup
-** Methods
-** Properties
-** Rules
-** Body
+ * Variables
+ * Setup
+ * Methods
+ * Properties
+ * Rules
+ * Body
 
 ## Goals
 
