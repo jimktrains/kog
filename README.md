@@ -13,7 +13,8 @@ See [small.kog](small.kog) for an idea of what I want it to become.  parser.py i
 A unit is a "typed" number. The base unit is defined, and then derived units can be derived from it.  Any unit can be used as a type when defining a varaible
 
 	Units
-		msec
+		usec
+			msec as 1000 usec
 			sec as 1000 msec
 		inch
 			foot as 12 inch
