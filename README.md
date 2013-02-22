@@ -42,7 +42,7 @@ These are symbols and cannot be assigned to.
 
 These are predefined Objects in the system
 
-* Integer (Should be autoboxed to a 16-byte int for performance)
+* Integer (Should be autoboxed to a 16-byte int for performance) (Since the main purpose of this language is microcontrollers, I'm not including a floating-point or large int type)
 * Byte (Should be autoboxed to a 8-byte int for performance)
  * String
 
