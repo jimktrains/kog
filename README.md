@@ -70,10 +70,21 @@ A Table has 2 parts
 
 Tables are used by VarName((Lookup1, Lookup2)) There are 2 parenthesis becase the parameter is a tuple. Since the table returns a tuple, they can be used as input to another table lookup. TableName(Table2Name((Lookup1, Lookup2)))
 
-	Enum1    | Enum2    || Type1    | Type2
-	---------+----------++----------+---------
-	Lookup11 | Loopup21 || Return11 | Return21
-	Lookup12 | Loopup22 || Return12 | Return22
+	Methods
+		Enum1 as Enum(:Lookup11, :Lookup12)
+		Enum2 as Enum(:Loopup21, :Loopup22)
+		Type1 as Enum(:Return11, :Return12)
+		Type2 as Enum(:Return21, :Return22)
+
+		MyTable as Table
+			Enum1     | Enum2     || Type1     | Type2
+			----------+-----------++-----------+----------
+			:Lookup11 | :Loopup21 || :Return11 | :Return21
+			:Lookup12 | :Loopup22 || :Return12 | :Return22
+	Variables
+		RetValue as (Type1, Type2)
+	Body
+		RetValue := Table((:Lookup11, :Loopup21)) # RetVal == (:Return11, :Return12)
 
 ### Sets
 Sets can be used as type and creates an Enum of the given values. The values retain their own type, and the set can be used as most specific common type of all the values in the set. The following snippet shows an example
