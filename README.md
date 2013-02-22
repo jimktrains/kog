@@ -38,6 +38,7 @@ These types that are used to define new types
 
 * Object
 * Enum
+ * Boolean
 * Set
 * Tuple
 * Method
