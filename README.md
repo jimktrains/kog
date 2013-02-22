@@ -147,7 +147,7 @@ Functions that take the base type of the array (Integer in the above example), m
 		MyList[5] := 7 # Syntax error
 		MyList := Square(MyList) # [36,4,9,16,25]
 
-List comprehension is also possible
+## List Comprehension
 
 	Varaibles
 		L as Integer[5]
