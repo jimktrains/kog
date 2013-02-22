@@ -46,6 +46,14 @@ These are predefined Objects in the system
 * Integer (Should be autoboxed to a 16-byte int for performance) (Since the main purpose of this language is microcontrollers, I'm not including a floating-point or large int type)
 * Byte (Should be autoboxed to a 8-byte int for performance)
  * String
+* IO
+ * IOPin(x)
+ * InPin(x)
+ * OutPin(x)
+ * COM as UART(x, y Baud, Even/Odd Parity, zbit Frame, abit Stop)
+ * SPI(:Master)
+ * SPI(:Slave)
+ * I2C
 
 #### Builders
 
