@@ -28,13 +28,13 @@ In order to avoid using floating points, each variable defined should contain an
 
 These are variables and can be assigned to.
 
-A-Za-z0-9_
+	[A-Za-z0-9_]+
 
 #### Symbol
 
 These are symbols and cannot be assigned to.
 
-: follow by A-Za-z0-9+-^&'
+	:[A-Za-z0-9+-^&']+
 
 ### Types
 
@@ -59,6 +59,30 @@ These types that are used to define new types
  * Function
  * Table
 * Array
+
+### Methods
+
+Methods are blocks of code that are named and whos inputs and outputs are typed
+
+The ``Return`` keyword is used to return a from the method and exit the method.
+
+	Methods
+		Square(x as Integer) as Integer
+			Return x*x
+
+#### Currying
+
+A method called with fewer than the number of arguments will result in a method being returned with the rest of the arguments from the original as arguments.
+
+	Methods
+		Multiply(x as Integer, y as Integer) as Integer
+			Return x * y
+	Variables
+		Double as Method(x as Integer) as Integer
+		RetVal as Integer
+	Body
+		Double := Multiply(2)
+		RetVal := Double(3) # RetVal == 6
 
 ### Table
 Tables are used to define table look-ups in an æsthetic manner.
