@@ -1,11 +1,127 @@
 # Test
-Variables
-  Phase1 as Integer
-  Phase2 as Integer
 
-Properties
-  IsRed(X as Integer) X == Red & Test(X)
+# Just some type bookkeeping
+Enum NormalHeadIndication
+	Symbols
+		:Red
+		:Yellow
+		:Green
+Enum LeftTurnArrowHeadIndication
+	Symbols
+		:LeftYellow
+		:LeftGreen
+	Extends
+		NormalHeadIndication
+Enum NormalPhaseState
+	Symbols
+		:Red
+		:Yellow
+		:Green
+		:AllRed
+Enum LeftTurnPhaseState
+	Symbols
+		:LeftYellow
+		:LeftGreen
+	Extends
+		NormalPhaseState
+Enum Phase
+	Symbols
+		:1
+		:2
+		:3
+		:4
+		:5
+		:6
+		:7
+		:8
+		:1+5
+		:1+6
+		:2+5
+		:2+6
+		:3+7
+		:3+8
+		:4+7
+		:4+8
 
-Rules
-  (Phase1, Phase2) causes PhaseConflict when
-     Phase1 == Phase2
+# This object is designed to mimic
+# an intersection that has an EB Left-Turn
+# Phase in addition to the normal cross-traffic
+# phases.
+Object Intersection
+	Types
+		UsedPhases as Set(:1+6, :2+6, :4+8)
+		UpdateMethod as Method(NormalHeadIndication, NormalHeadIndication, LeftTurnArrowHeadIndication) as None
+
+	Variables
+		CurPhase as UsedPhases
+		CurPhaseState as LeftTurnPhaseState
+		SignalUpdateMethod as UpdateMethod
+
+		PhaseToLights as Table
+			UsedPhases | LeftTurnPhaseState || NormalHeadIndication | NormalHeadIndication | LeftTurnArrowHeadIndication
+			------+-------------++----------+---------+------------
+			:1+6  | :LeftGreen  || :Red     | :Red    | :LeftGreen
+			:1+6  | :LeftYellow || :Red     | :Red    | :LeftYellow
+			:2+6  | :Green      || :Red     | :Green  | :Green
+			:2+6  | :Yellow     || :Red     | :Yellow | :Yellow
+			:2+6  | :AllRed     || :Red     | :Red    | :Red
+			:4+8  | :Green      || :Green   | :Red    | :Red
+			:4+8  | :Yellow     || :Yellow  | :Red    | :Red
+			:4+8  | :AllRed     || :Red     | :Red    | :Red
+			
+		PhaseTransition as Table
+			Phase | LeftTurnPhaseState || Phase | LeftTurnArrowHeadIndication
+			======+====================++=======+============
+			:2+6  | :AllRed            || :1+6  | :LeftGreen
+			:1+6  | :LeftGreen         || :1+6  | :LeftYellow
+			:1+6  | :LeftYellow        || :2+6  | :Green
+			:2+6  | :Green             || :2+6  | :Yellow
+			:2+6  | :Yellow            || :4+8  | :AllRed
+			:4+8  | :AllRed            || :4+8  | :Green
+			:4+8  | :Green             || :4+8  | :Yellow
+			:4+8  | :Yellow            || :2+6  | :AllRed
+
+		PhaseLength as Table
+			Phase | LeftTurnPhaseState || Seconds
+			------+--------------------++--------
+			:2+6  | :AllRed            ||  2 sec
+			:1+6  | :LeftGreen         ||  5 sec
+			:1+6  | :LeftYellow        ||  3 sec
+			:2+6  | :Green             || 10 sec
+			:2+6  | :Yellow            ||  3 sec
+			:4+8  | :AllRed            ||  2 sec
+			:4+8  | :Green             || 20 sec
+			:4+8  | :Yellow            ||  3 sec
+	Setup
+		CurPhase      := :1+6
+		CurPhaseState := :AllRed
+	Alias
+		:Red as NormalHeadIndication.:Red
+		:Yellow as NormalHeadIndication.:Yellow
+		:Green as NormalHeadIndication.:Green
+		:LeftYellow as LeftTurnArrowHeadIndication.:LeftYellow
+		:LeftGreen as LeftTurnArrowHeadIndication.:LeftGreen
+		:1+6 as Phase.:1+6
+		:2+6 as Phase.:2+6
+		:4+8 as Phase.:4+8
+	Methods
+		Update() as Seconds
+			(CurPhase, CurPhaseState) = PhaseTransition[CurPhase][CurPhaseState]
+			SignalUpdateMethod(PhaseToLights[CurPhase][CurPhaseState])
+			Return PhaseLength[CurPhas][CurPhaseState]
+		SetUpdateMethod(m as UpdateMethod)
+			SignalUpdateMethod = m
+
+Program Main
+	Variables
+		FifthAtSixth as Intersection
+		NextUpdate as Seconds
+	Setup
+		NextUpdate := 0 sec
+		FifthAtSixth.SetUpdateMethod(UpdateSignalHeads)
+	Methods
+		UpdateSignalHeads(NS_Heads as NormalHeadIndication, WB_Head as NormalHeadIndication, EB_Head as LeftTurnArrowHeadIndication) as None
+			# Do what it does to sent all the singal heads
+	Body
+		After NextUpdate
+			NextUpdate := FifthAtSixth.Update()

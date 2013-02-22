@@ -1,8 +1,0 @@
-Variables {
-	Phase as Integer
-}
-
-Program Main {
-	Phase := 1
-	Pahse := Phase + 1
-}
