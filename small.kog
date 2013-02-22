@@ -106,9 +106,9 @@ Object Intersection
 		:4+8 as Phase.:4+8
 	Methods
 		Update() as Seconds
-			(CurPhase, CurPhaseState) := PhaseTransition[CurPhase][CurPhaseState]
-			SignalUpdateMethod(PhaseToLights(CurPhase,CurPhaseState))
-			Return PhaseLength(CurPhas,CurPhaseState)
+			(CurPhase, CurPhaseState) := PhaseTransition((CurPhase,CurPhaseState))
+			SignalUpdateMethod(PhaseToLights((CurPhase,CurPhaseState)))
+			Return PhaseLength((CurPhas,CurPhaseState))
 		SetUpdateMethod(m as UpdateMethod)
 			SignalUpdateMethod := m
 
