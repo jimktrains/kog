@@ -193,7 +193,3 @@ Catches exceptions
 
 	Rescue x as ConflictFault
 		x := x + 1
-
-# Goals
-
-To be able to compile programs that can be run on microcontrollers.
