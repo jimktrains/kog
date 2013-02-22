@@ -8,6 +8,20 @@ See [small.kog](small.kog) for an idea of what I want it to become.  parser.py i
 
 ## Syntax
 
+### Units
+
+A unit is a "typed" number. The base unit is defined, and then derived units can be derived from it.  Any unit can be used as a type when defining a varaible
+
+	Units
+		msec
+			sec as 1000 msec
+		inch
+			foot as 12 inch
+			yard as 36 inch
+			mile as 5280 foot
+
+In order to avoid using floating points, each variable defined should contain an Integer for each derived unit (meaning derived units should be below 16k of the unit their based on)
+
 ### Identifiers
 
 #### Variables
@@ -18,7 +32,7 @@ A-Za-z0-9_
 
 #### Symbol
 
-These are symbles and cannot be assgined to.
+These are symbols and cannot be assigned to.
 
 : follow by A-Za-z0-9+-^&'
 
@@ -28,8 +42,8 @@ These are symbles and cannot be assgined to.
 
 These are predefined Objects in the system
 
-* Integer
-* Byte
+* Integer (Should be autoboxed to a 16-byte int for performance)
+* Byte (Should be autoboxed to a 8-byte int for performance)
  * String
 
 #### Builders
