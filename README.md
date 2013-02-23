@@ -427,6 +427,17 @@ The ``Fixed`` type could almost be considered
 * SumOfPow4
 * Kurtosis
 
+# Dates
+
+* GregorianMonth
+ * :January ....
+ * Alias :Jan as :January ...
+* GregorianDate
+ * Alias Year as Integer
+ * Alias Day as Integer
+ * Extends (Year, Month, Day)
+ * Rules to ensure good dates
+
 # Operators
 
 Math: +, -, *, /, %
