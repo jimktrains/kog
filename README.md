@@ -44,7 +44,8 @@ These are symbols and cannot be assigned to.
 These are predefined Objects in the system
 
 * Integer (Should be autoboxed to a 16-byte int for performance) (Since the main purpose of this language is microcontrollers, I'm not including a floating-point or large int type. There isn't any reason a floating point type couldn't be added for machines that support it.)
-* Byte (Should be autoboxed to a 8-byte int for performance)
+* Fixed - Q16.16 fixed point decimal
+* Byte - (Should be autoboxed to a 8-byte int for performance)
  * String
 * IO
  * IOPin(x)
@@ -283,3 +284,120 @@ Catches exceptions
 
 	Rescue x as ConflictFault
 		x := x + 1
+
+# StdLib
+
+## Units
+* usec as Integer
+ * msec as 1000 usec
+ * sec as 1000 sec
+ * min as 60 sec
+* Radian as Fixed
+ * RCircle as 6.28318 Radian
+* miRadian as Integer
+ * iRadian as 1000 miRadian
+ * iRCircle as 6283 Radian
+* mDegree as Integer
+ * Degree as 1000 mDegree
+ * DCircle as 360 Degree
+* mGradian as Integer
+ * Gradian as 1000 mGradian
+ * GCircle as 400 Gradian
+
+## Math
+* Trig
+ * Sin(rad as Radian) as Fixed
+ * Sin(rad as iRadian) as Fixed
+ * Sin(grad as Gradian) as Fixed
+ * Sin(deg as Degree) as Fixed
+ * Cos(rad as Radian) as Fixed
+ * Cos(rad as iRadian) as Fixed
+ * Cos(grad as Gradian) as Fixed
+ * Cos(deg as Degree) as Fixed
+ * Tan(rad as Radian) as Fixed
+ * Tan(rad as iRadian) as Fixed
+ * Tan(grad as Gradian) as Fixed
+ * Tan(deg as Degree) as Fixed
+ * aSin(rad as Radian) as Fixed
+ * aSin(rad as iRadian) as Fixed
+ * aSin(grad as Gradian) as Fixed
+ * aSin(deg as Degree) as Fixed
+ * aCos(rad as Radian) as Fixed
+ * aCos(rad as iRadian) as Fixed
+ * aCos(grad as Gradian) as Fixed
+ * aCos(deg as Degree) as Fixed
+ * aTan(rad as Radian) as Fixed
+ * aTan(rad as iRadian) as Fixed
+ * aTan(grad as Gradian) as Fixed
+ * aTan(deg as Degree) as Fixed
+ * Sinh(rad as Radian) as Fixed
+ * Sinh(rad as iRadian) as Fixed
+ * Sinh(grad as Gradian) as Fixed
+ * Sinh(deg as Degree) as Fixed
+ * Cosh(rad as Radian) as Fixed
+ * Cosh(rad as iRadian) as Fixed
+ * Cosh(grad as Gradian) as Fixed
+ * Cosh(deg as Degree) as Fixed
+ * Tanh(rad as Radian) as Fixed
+ * Tanh(rad as iRadian) as Fixed
+ * Tanh(grad as Gradian) as Fixed
+ * Tanh(deg as Degree) as Fixed
+ * aSinh(rad as Radian) as Fixed
+ * aSinh(rad as iRadian) as Fixed
+ * aSinh(grad as Gradian) as Fixed
+ * aSinh(deg as Degree) as Fixed
+ * aCosh(rad as Radian) as Fixed
+ * aCosh(rad as iRadian) as Fixed
+ * aCosh(grad as Gradian) as Fixed
+ * aCosh(deg as Degree) as Fixed
+ * aTanh(rad as Radian) as Fixed
+ * aTanh(rad as iRadian) as Fixed
+ * aTanh(grad as Gradian) as Fixed
+ * aTanh(deg as Degree) as Fixed
+* Misc
+ * Loge(n as Fixed) as Fixed
+ * Log2(n as Fixed) as Fixed
+ * Log10(n as Fixed) as Fixed
+ * Sqrt(n as Fixes as Fixed
+ * Pow(n as Fixed, e as Fixed) as Fixed
+ * Pow(n as Integer, e as Integer) as Integer
+ * Pi() as Fixed
+ * Pi2() as Fixed #Pi/2
+ * Pi4() as Fixed #Pi/4
+ * E() as Fixed
+ * Phi() as Fixed
+ * Gamma() as Fixed
+ * Ceil(n as Fixed) as Integer
+ * Floor(n as Fixed) as Integer
+ * Round(n as Fixed, method as RoundingMethod) as Integer
+ * Abs(n as Fixed) as Fixed
+ * Abs(n as Integer) as Integer
+ * GaussError(n as Fixed) as Fixed
+ * GaussErrorCompl(n as Fixed) as Fixed
+ * IsNaN(n as Fixed) as Boolean
+ * IsNaN(n as Integer) as Boolean
+
+
+## Misc
+* RoundingMethod
+ * :RoundUp
+ * :RoundDown
+ * :RoundEven
+ * :RoundOdd
+ * :RoundToZero
+ * :RoundAwayFromZero
+* Serialize
+* String
+ * Methods
+  * Concat(str as String)
+  * Length()
+  * Find(str as String)
+  * Replace(search as String, replace as String)
+
+# Operators
+
+Math: +, -, *, /, %
+
+Comparison: ==, <=, >=
+
+Logic: &, |, ^, ->, <->
