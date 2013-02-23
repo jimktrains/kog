@@ -241,7 +241,7 @@ These are constraints to what values can assigned to varaibles. These are define
 ## Loop
 ## For
 
-``For`` loops iterate over iterable values (Sets, Enum, and Array).
+``For`` loops iterate over iterable values (Sets, Enum, Generators, and Array).
 
 	Variables
 		L as Integer[5]
