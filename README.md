@@ -314,6 +314,11 @@ Catches exceptions
  * Gradian as 1000 mGradian
  * GCircle as 400 Gradian
 
+The ``Fixed`` type could almost be considered
+
+* Decimal as Integer
+ * Whole as 1000 Decimal
+
 ## Math
 * Trig
  * Sin(rad as Radian) as Fixed
