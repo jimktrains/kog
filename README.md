@@ -157,6 +157,16 @@ Functions that take the base type of the array (Integer in the above example), m
 		MyList[5] := 7 # Syntax error
 		MyList := Square(MyList) # [36,4,9,16,25]
 
+There is a special array type ``Statistical``.  This can be used with the statistical methods. Additional information is stored alongside the array to aid in efficent calulations of statistical properties.
+
+	Variables
+		MyList as Statistical as Integer[10]
+	Body
+		MyList := [1,2,3,4,5,6,7,8,9,10]
+		Average(MyList) # == 5.5000
+		StdDec(MyList) # == 3.0276
+		Sum(MyList) # == 55
+
 ## List Comprehension
 
 	Varaibles
@@ -293,7 +303,7 @@ Catches exceptions
  * sec as 1000 sec
  * min as 60 sec
 * Radian as Fixed
- * RCircle as 6.28318 Radian
+ * RCircle as 6.2832 Radian
 * miRadian as Integer
  * iRadian as 1000 miRadian
  * iRCircle as 6283 Radian
@@ -376,7 +386,9 @@ Catches exceptions
  * GaussErrorCompl(n as Fixed) as Fixed
  * IsNaN(n as Fixed) as Boolean
  * IsNaN(n as Integer) as Boolean
-
+ * RandSeed(seed as Integer) as None
+ * Rand() as Integer
+ * GaussRand(avg as Integer, stdev as Integer) as Integer
 
 ## Misc
 * RoundingMethod
@@ -393,6 +405,20 @@ Catches exceptions
   * Length()
   * Find(str as String)
   * Replace(search as String, replace as String)
+* Faults
+ * OverflowFault - Arithmetic overflow
+ * UnderflowFault - Arithmetic underflow
+ * TimeConstraintFault - An Every block executes late
+# Statistics
+* Sum
+* Average
+* SumOfSquares
+* Variance
+* StdDev
+* SumOfCubes
+* Skewness
+* SumOfPow4
+* Kurtosis
 
 # Operators
 
