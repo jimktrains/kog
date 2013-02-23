@@ -51,7 +51,7 @@ These are predefined Objects in the system
  * IOPin(x)
  * InPin(x)
  * OutPin(x)
- * COM as UART(x, y Baud, Even/Odd Parity, zbit Frame, abit Stop)
+ * UART(x, y Baud, Even/Odd Parity, zbit Frame, abit Stop)
  * SPI(:Master)
  * SPI(:Slave)
  * I2C
