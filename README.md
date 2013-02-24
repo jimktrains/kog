@@ -417,8 +417,16 @@ The ``Fixed`` type could almost be considered
  * UnderflowFault - Arithmetic underflow
  * TimeConstraintFault - An Every block executes late
 
-# Statistics
+# Arrays
 
+* Length()
+
+## Statistics
+
+These are methods that can be called on statistical arrays
+
+* Min
+* Max
 * Sum
 * Average
 * SumOfSquares
