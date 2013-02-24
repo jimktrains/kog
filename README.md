@@ -416,7 +416,9 @@ The ``Fixed`` type could almost be considered
  * OverflowFault - Arithmetic overflow
  * UnderflowFault - Arithmetic underflow
  * TimeConstraintFault - An Every block executes late
+
 # Statistics
+
 * Sum
 * Average
 * SumOfSquares
