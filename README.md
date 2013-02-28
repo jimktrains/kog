@@ -45,8 +45,8 @@ These are symbols and cannot be assigned to.
 
 These are predefined Objects in the system
 
-* Integer (Should be autoboxed to a 16-byte int for performance) (Since the main purpose of this language is microcontrollers, I'm not including a floating-point or large int type. There isn't any reason a floating point type couldn't be added for machines that support it.)
-* Fixed - Q16.16 fixed point decimal
+* Integer (Should be autoboxed to a 16-byte int for performance) (Since the main purpose of this language is microcontrollers, I'm not including a floating-point or large int type. There isn't any reason a floating point type couldn't be added for machines that support it.) Literals may have \_'s, which are ignored by the compiler. If a literal is prefixed by 0x it is interpreted as a hex-encoded integer. 0o as octal. 0b as binary. Integers are signed.
+* Fixed - Q16.14 fixed point decimal. May have \_'s which are ignored by the compiler. Fixed are signed.
 * Byte - (Should be autoboxed to a 8-byte int for performance)
  * String
 * IO
@@ -57,6 +57,8 @@ These are predefined Objects in the system
  * SPI(:Master)
  * SPI(:Slave)
  * I2C
+* Array
+ * Statistical
 
 #### Builders
 
@@ -67,14 +69,15 @@ These types that are used to define new types
  * Boolean
 * Set
 * Tuple
+ * Date
+ * Complex
 * Method
  * Function
  * Table
-* Array
 
 ### Methods
 
-Methods are blocks of code that are named and whos inputs and outputs are typed
+Methods are blocks of code that are named and whose inputs and outputs are typed
 
 The ``Return`` keyword is used to return a from the method and exit the method.
 
@@ -104,7 +107,7 @@ A Table has 2 parts
 * Header - Defines the types in the table.  The lookup section must be an Enum and cover all values for that Enum.  Each lookup-type is separated by a double bar (|).  The Lookup section is separated from the return types by a double bar (||).  The following line may only consist of dash (-) and pluses (+). Spacing in the header doesn't affect meaning and may be changed in order to make the table look good. The return types are separated by a bar (|)
 * Data - Contains all of the lookup values and their associated return values.  Like the header, the lookup values are separated by bars(|) and from the return values by a double bar(||). The sections may or may not be separated by a spacing line similar to the one below the header.  The table may or may not end in a spacing line.
 
-Tables are used by VarName((Lookup1, Lookup2)) There are 2 parenthesis becase the parameter is a tuple. Since the table returns a tuple, they can be used as input to another table lookup. TableName(Table2Name((Lookup1, Lookup2)))
+Tables are used by VarName((Lookup1, Lookup2)) There are 2 parenthesis because the parameter to the method call is a tuple. Since the table returns a tuple, they can be used as input to another table lookup. TableName(Table2Name((Lookup1, Lookup2)))
 
 	Types
 		Enum1 as Enum(:Lookup11, :Lookup12)
@@ -159,7 +162,7 @@ Functions that take the base type of the array (Integer in the above example), m
 		MyList[5] := 7 # Syntax error
 		MyList := Square(MyList) # [36,4,9,16,25]
 
-There is a special array type ``Statistical``.  This can be used with the statistical methods. Additional information is stored alongside the array to aid in efficent calulations of statistical properties.
+There is a special array type ``Statistical``.  This can be used with the statistical methods. Additional information is stored alongside the array to aid in efficient calculations of statistical properties.
 
 	Variables
 		MyList as Statistical as Integer[10]
@@ -316,11 +319,6 @@ Catches exceptions
  * Gradian as 1000 mGradian
  * GCircle as 400 Gradian
 
-The ``Fixed`` type could almost be considered
-
-* Decimal as Integer
- * Whole as 1000 Decimal
-
 ## Math
 * Trig
  * Sin(rad as Radian) as Fixed
@@ -425,17 +423,17 @@ The ``Fixed`` type could almost be considered
 
 These are methods that can be called on statistical arrays
 
-* Min
-* Max
-* Sum
-* Average
-* SumOfSquares
-* Variance
-* StdDev
-* SumOfCubes
-* Skewness
-* SumOfPow4
-* Kurtosis
+* Min()
+* Max()
+* Sum()
+* Average()
+* SumOfSquares()
+* Variance()
+* StdDev()
+* SumOfCubes()
+* Skewness()
+* SumOfPow4()
+* Kurtosis()
 
 # Dates
 
