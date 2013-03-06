@@ -46,7 +46,9 @@ These are symbols and cannot be assigned to.
 These are predefined Objects in the system
 
 * Integer (Should be autoboxed to a 16-byte int for performance) (Since the main purpose of this language is microcontrollers, I'm not including a floating-point or large int type. There isn't any reason a floating point type couldn't be added for machines that support it.) Literals may have \_'s, which are ignored by the compiler. If a literal is prefixed by 0x it is interpreted as a hex-encoded integer. 0o as octal. 0b as binary. Integers are signed.
+* Unsigned Integer
 * Fixed - Q16.14 fixed point decimal. May have \_'s which are ignored by the compiler. Fixed are signed.
+* Unsigned Fixed
 * Byte - (Should be autoboxed to a 8-byte int for performance)
  * String
 * IO
@@ -74,6 +76,16 @@ These types that are used to define new types
 * Method
  * Function
  * Table
+
+#### Type Modifiers
+ * in Register - Forces a value to only be stored in a register and never loaded into RAM. NOTE: This could use a lot of registers very quickly. NOTE: On a computer with an operating system, this is probably not a good idea as the data will be lost on context-switching depending on calling conventions (The generated code will not store these registers in memory). A possible use of this modifier is storage of cryptographic keys.  This modifier will also work only on statically compiled code.
+ * with `Check algorithm` - Stores the value with the output of the check algorithm. When a load is done, the value is checked (and corrected if possible) before being placed in a register for use. The downside to using this is the overhead in storage and computational cost on each load and store.
+  * ReedSolomon
+  * CRC32
+  * CRC16
+  * CRC8
+  * Duplicate
+  * Convolution
 
 ### Methods
 
