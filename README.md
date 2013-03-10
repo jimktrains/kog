@@ -97,6 +97,8 @@ The ``Return`` keyword is used to return a from the method and exit the method.
 		Square(x as Integer) as Integer
 			Return x*x
 
+The ``Square`` method can be called as ``Square(3)`` or ``Square(x=3)``. If named parameters are used, then all the parameters must be named.
+
 #### Currying
 
 A method called with fewer than the number of arguments will result in a method being returned with the rest of the arguments from the original as arguments.
